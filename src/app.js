@@ -1,0 +1,30 @@
+import React, {Component} from 'react';
+import {View, Navigator} from 'react-native';
+
+import Login from './pages/login'
+import Profile from './pages/profile'
+
+import { Provider } from 'react-redux'
+import store from './redux/store'
+
+
+class App extends Component {
+    renderScene (route, navigator) {
+        return (<route.component navigator={navigator} {...route.passProps}/>);
+    }
+
+    render() {
+        return (
+            <Provider store={store}>
+                <Navigator
+                    initialRoute={{component: Profile}}
+                    configureScene={() => {
+                        return Navigator.SceneConfigs.FloatFromRight;
+                    }}
+                    renderScene={this.renderScene}/>
+            </Provider>
+        );
+    }
+}
+
+export default App;
