@@ -2,13 +2,13 @@ import React from 'react'
 import { View, StyleSheet } from 'react-native'
 
 import DatePicker from 'react-native-datepicker'
-const DatePickers = (props) => {
+const DatePickers = ({onDateChange}) => {
     return(
         <View style={styles.wrapper}>
             <DatePicker
                 style={styles.datePicker}
                 mode="date"
-                placeholder="select date"
+                placeholder="end date"
                 format="YYYY-MM-DD"
                 minDate="2016-05-01"
                 maxDate="2016-06-01"
@@ -18,13 +18,13 @@ const DatePickers = (props) => {
                     dateInput: styles.dateInput,
                     dateIcon: styles.dateIcon
                 }}
-                onDateChange={(date) => {this.setState({date: date})}}
+                onDateChange={(date) => {onDateChange(date)}}
             />
 
             <DatePicker
                 style={styles.datePicker}
                 mode="date"
-                placeholder="select date"
+                placeholder="start date"
                 format="YYYY-MM-DD"
                 minDate="2016-05-01"
                 maxDate="2016-06-01"

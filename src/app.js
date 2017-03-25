@@ -10,6 +10,7 @@ import store from './redux/store'
 
 
 class App extends Component {
+    
     renderScene (route, navigator) {
         return (<route.component navigator={navigator} {...route.passProps}/>);
     }
