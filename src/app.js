@@ -3,6 +3,7 @@ import {View, Navigator} from 'react-native';
 
 import Login from './pages/login'
 import Profile from './pages/profile'
+import EventMap from './pages/event-map'
 
 import { Provider } from 'react-redux'
 import store from './redux/store'
@@ -17,7 +18,7 @@ class App extends Component {
         return (
             <Provider store={store}>
                 <Navigator
-                    initialRoute={{component: Profile}}
+                    initialRoute={{component: EventMap}}
                     configureScene={() => {
                         return Navigator.SceneConfigs.FloatFromRight;
                     }}

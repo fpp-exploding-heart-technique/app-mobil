@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">hermesapp_mobile</string>
     <string name="facebook_app_id">1823198054372989</string>
-
+    <string name="gmaps_api_key">AIzaSyC3HFPFUbCjgmvOH4xFFuQinIFJ3iBWpwg</string>
 </resources>

@@ -8,7 +8,6 @@ class Profile extends Component {
         return(
             <View>
                 <Text>This is profile page feel free to edit this</Text>
-
             </View>
         );
     }
