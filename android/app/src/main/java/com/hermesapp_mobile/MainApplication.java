@@ -24,6 +24,7 @@ public class MainApplication extends Application implements ReactApplication {
   protected static CallbackManager getCallbackManager() {
       return mCallbackManager;
   }
+  
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
     public boolean getUseDeveloperSupport() {

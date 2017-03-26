@@ -1,41 +1,43 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 
 import DatePicker from 'react-native-datepicker'
-const DatePickers = ({onDateChange}) => {
+const DatePickers = ({onStartDateChange, onEndDateChange, startDate, endDate }) => {
     return(
         <View style={styles.wrapper}>
             <DatePicker
                 style={styles.datePicker}
-                mode="date"
-                placeholder="end date"
-                format="YYYY-MM-DD"
-                minDate="2016-05-01"
-                maxDate="2016-06-01"
+                mode="datetime"
+                date={startDate}
+                placeholder="start date"
+                format="YYYY-MM-DD HH:mm"
+               showIcon={false}
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{
                     dateInput: styles.dateInput,
                     dateIcon: styles.dateIcon
                 }}
-                onDateChange={(date) => {onDateChange(date)}}
+                onDateChange={(date) => {onStartDateChange(date)}}
             />
 
             <DatePicker
                 style={styles.datePicker}
-                mode="date"
-                placeholder="start date"
-                format="YYYY-MM-DD"
-                minDate="2016-05-01"
-                maxDate="2016-06-01"
+                mode="datetime"
+                date={endDate}
+                placeholder="end date"
+                format="YYYY-MM-DD HH:mm"
+                showIcon={false}
                 confirmBtnText="Confirm"
                 cancelBtnText="Cancel"
                 customStyles={{
                     dateInput: styles.dateInput,
                     dateIcon: styles.dateIcon
                 }}
-                onDateChange={(date) => {this.setState({date: date})}}
+                onDateChange={(date) => {onEndDateChange(date)}}
             />
+
+
         </View>
     )
 }
@@ -50,17 +52,12 @@ const styles = StyleSheet.create({
 
     datePicker: {
         width: 150,
-        marginTop: 10,
-        marginBottom: 10
+        margin: 10
     },
 
     dateInput: {
         borderRadius: 20
     },
-
-    dateIcon: {
-        height: 0
-    }
 
 });
 export default DatePickers;

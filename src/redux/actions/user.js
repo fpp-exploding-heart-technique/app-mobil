@@ -1,6 +1,8 @@
+import axios from 'axios'
+
 export const actionTypes = {
     INIT: 'INIT',
-    
+
     LOGIN: 'LOGIN',
     LOGIN_FAIL: 'LOGIN_FAIL',
     LOGIN_SUCCESS: 'LOGIN_SUCCESS',
@@ -12,35 +14,59 @@ export const actionTypes = {
 
     SIGNUP: 'SIGNUP',
     SIGNUP_FAIL: 'SIGNUP_FAIL',
-    SIGNUP_SUCCESS: 'SIGNUP_FAIL' 
+    SIGNUP_SUCCESS: 'SIGNUP_FAIL'
 };
 
-
 // ----- LOGIN -----
-const fetchUser = (id, email, callback) => {
-    return (dispatch, getState) => {
-        
-    }
+export const fetchUser = (id, email, callback) => {
+    return (dispatch, getState) => {}
 }
 
-export const login = (email, password, callback) => {
-   
+export const login = (token, userId, callback) => {
+
     return (dispatch, getState) => {
-       
+        axios({
+            url: 'https://graph.facebook.com/v2.5/me?fields=email,name&access_token=' + token,
+            method: 'get'
+        }).then(res => {
+            console.log(res.data);
+            // backend user register
+            axios({
+                url: 'https://hermes-hackathon.herokuapp.com/users/checkin',
+                method: 'post',
+                data: {
+                    facebook: userId
+                }
+            })
+            .then(res => {
+                console.log(res.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+
+            dispatch({
+                type: actionTypes.LOGIN,
+                payload: {
+                    id: userId,
+                    name: res.data.name,
+                    email: res.data.email,
+                    picUrl: 'http://graph.facebook.com/' + userId + '/picture?type=large'
+                }
+            });
+        }).catch(err => {
+            console.log(err);
+        });
+
     }
 
-    
 }
 
 // ----- LOGOUT -----
 export const logout = (callback) => {
-    return (dispatch, getState) => {
-        
-    }
+    return {type: actionTypes.LOGOUT};
 }
 
 export const signup = (email, password, name, callback) => {
-    return (dispatch, getState) => {
-        
-    }
-} 
+    return (dispatch, getState) => {}
+}

@@ -9,9 +9,9 @@ module.exports = StyleSheet.create({
   },
   body: {
     flex: 1,
-     justifyContent: 'flex-end',
+     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#212121',
+    backgroundColor: '#fff',
   },
   textinput: {
     height: 40,

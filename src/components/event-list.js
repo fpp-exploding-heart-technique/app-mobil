@@ -12,14 +12,16 @@ import {
 
 import Header from './header'
 
-export default class EventList extends Component {
+import {connect} from 'react-redux'
+
+class EventList extends Component {
     constructor(props) {
         super(props);
         const ds = new ListView.DataSource({
             rowHasChanged: (r1, r2) => r1 !== r2
         });
         this.state = {
-            dataSource: ds.cloneWithRows([['John', '21,14,2015'],['John', '21,14,2015']])
+            dataSource: ds.cloneWithRows(this.props.events)
         };
     }
 
@@ -43,7 +45,7 @@ export default class EventList extends Component {
                         dataSource={this.state.dataSource}
                         renderRow={(rowData) => 
                         <Text style={styles.listItem}>
-                        {rowData[0]} -- {rowData[1]}</Text>} />
+                        {rowData.title} -- {rowData.description}</Text>} />
                 </ScrollView>
 
             </View>
@@ -69,3 +71,14 @@ const styles = StyleSheet.create({
         borderRadius: 30
     }
 });
+
+EventList.defaultProps = {
+    events: [],
+    filter: {}
+}
+
+export default connect(store => {
+    return {
+        events: store.events.events
+    }
+})(EventList);
