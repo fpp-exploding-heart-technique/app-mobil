@@ -103,24 +103,27 @@ export const joinEvent = (userId, eventId, name) => {
     }
 }
 
-export const confirmRequest = (confirmed, userId, eventId) => {
+export const confirmRequest = (confirmed, userId, name, eventId) => {
     return (dispatch) => {
+        console.log(userId, eventId, name, confirmed);
         axios({
             url: 'https://hermes-hackathon.herokuapp.com/events/addAttendee',
             method: 'post',
             data: {
                 confirmed,
                 userId,
-                eventId
+                eventId,
+                name
             }
         })
-        ,then(res => {
+        .then(res => {
+            
                 axios({
                     url: 'https://hermes-hackathon.herokuapp.com/users/' + userId,
                     method: 'get'
                 })
                 .then(res => {
-                    console.log(res.data);
+            
                     dispatch({type: actionTypes.CONFIRM_REQUEST, payload: res.data});
                 })
                 .catch(err => {

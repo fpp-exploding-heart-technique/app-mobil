@@ -49,7 +49,7 @@ class EventList extends Component {
             }}>
                 <ListView
                     dataSource={this.state.dataSource}
-                    renderRow={(rowData) => <this.props.listItem rowData={rowData}/>} />
+                    renderRow={(rowData) => <this.props.listItem rowData={rowData} onPressEvent={this.props.onItemPress}/>} />
             </ScrollView>
             </View>
         );

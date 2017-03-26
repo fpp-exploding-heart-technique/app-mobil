@@ -6,7 +6,7 @@ import TabView from '../components/tab-view'
 import EventList from '../components/event-list'
 import UserListItem from '../components/user-list-item'
 
-import {fetchEvent, joinEvent} from '../redux/actions/events'
+import {fetchEvent, joinEvent, confirmRequest} from '../redux/actions/events'
 import {connect} from 'react-redux'
 
 
@@ -21,10 +21,11 @@ class EventDetail extends Component {
             usrName: ''
         }
     }
-    componentDidMount() {
+
+    fetchCurrEvent = (id) => {
         this
             .props
-            .dispatch(fetchEvent(this.props.eventId, (loc) => {
+            .dispatch(fetchEvent(id, (loc) => {
                 axios({
                     url: 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' + loc + '&key=AIzaSyD5ZVqWOjENIDBJGO3dBCAQ-iiF-yZd8tQ',
                     method: 'get'
@@ -48,6 +49,10 @@ class EventDetail extends Component {
                     console.log(err);
                 })
             }
+    }
+    componentDidMount() {
+        
+        this.fetchCurrEvent(this.props.eventId);
 
     }
 
@@ -57,10 +62,16 @@ class EventDetail extends Component {
     }
 
     renderRequests = () => {
-        return <EventList data={this.props.event.requests} listItem={UserListItem}/>
+        return <EventList data={this.props.event.requests} listItem={UserListItem} onItemPress={this.confirmRequest}/>
+    }
+
+    confirmRequest = (confirmed, userId, name) => {
+        this.props.dispatch(confirmRequest(confirmed, userId, name, this.props.eventId));
+        this.fetchCurrEvent(this.props.eventId);
     }
 
     render() {
+        console.log(this.props);
         let startDate = new Date(this.props.event.start);
         let endDate = new Date(this.props.event.end);
         console.log(this.props.event.attendees.indexOf(this.props.userId) !== -1);

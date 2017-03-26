@@ -37,6 +37,9 @@ export default user = (state=initialState, action) => {
         case actionTypes.JOIN_EVENT:
             console.log('updated');
             return {...state, activeEvent: {...state.activeEvent, requests: [...state.activeEvent.requests, action.payload]}};
+
+        case actionTypes.CONFIRM_REQUEST:
+            return {...state, activeEvent: {...state.activeEvent, attendees: [...state.activeEvent.attendees, action.payload]}};
         default: 
             return state;
     }
