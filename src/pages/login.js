@@ -15,12 +15,6 @@ import {LoginButton, AccessToken, LoginManager} from 'react-native-fbsdk'
 
 
 class Login extends Component {
-    componentDidMount () {
-        if (this.props.loggedIn) {
-            this.navigate(EventMap);
-        }
-    }
-
     navigate(component) {
         this
             .props
@@ -29,6 +23,9 @@ class Login extends Component {
     }
 
     render() {
+        if (this.props.loggedIn) {
+            this.navigate(EventMap);
+        }
         return (
             <View style={styles.container}>
                 <View style={styles.body}>
@@ -41,7 +38,7 @@ class Login extends Component {
                         readPermissons={["public_profile"], ["email"]}
                         onLoginFinished={(error, result) => {
                         if (error) {
-                            alert("login has error: " + result.error);
+                            alert("login has error: " + error);
                         } else if (result.isCancelled) {
                             alert("login is cancelled.");
                         } else {

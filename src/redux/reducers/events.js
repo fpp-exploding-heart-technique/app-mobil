@@ -12,7 +12,10 @@ const initialState = {
             logtitude: 0
         },
         desc: 'short desc',
-        owner: 'anid'
+        owner: 'anid',
+        requests: [],
+        attendees: []
+
     },
     eventFilter: {
         start: '',
@@ -23,13 +26,17 @@ const initialState = {
 }
 
 export default user = (state=initialState, action) => {
+    
     switch(action.type) {
         case actionTypes.FETCH_EVENTS:
             return {...state, events: action.payload};
         case actionTypes.FETCH_EVENT: 
             return {...state, activeEvent: action.payload}
         case actionTypes.UPDATE_FILTER:
-            return {...state, eventFilter: {...state.eventFilter, ...action.payload}}
+            return {...state, eventFilter: {...state.eventFilter, ...action.payload}};
+        case actionTypes.JOIN_EVENT:
+            console.log('updated');
+            return {...state, activeEvent: {...state.activeEvent, requests: [...state.activeEvent.requests, action.payload]}};
         default: 
             return state;
     }

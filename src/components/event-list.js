@@ -21,7 +21,7 @@ class EventList extends Component {
             rowHasChanged: (r1, r2) => r1 !== r2
         });
         this.state = {
-            dataSource: ds.cloneWithRows(this.props.events)
+            dataSource: ds.cloneWithRows(this.props.data)
         };
     }
 
@@ -29,25 +29,28 @@ class EventList extends Component {
         Alert.alert('Button pressed!', 'Congrats You are on the main page',);
     };
 
+    renderHeader = () => {
+        if (this.props.title) {
+            return <Header text={this.props.title}>
+                    </Header>
+        }
+    }
+
     render() {
         return (
-            
-            <View style={styles.container}>
-                <Header text={this.props.title}/>
-                
-                <ScrollView
-                    style={{
-                    width: Dimensions
-                        .get('window')
-                        .width
-                }}>
-                    <ListView
-                        dataSource={this.state.dataSource}
-                        renderRow={(rowData) => 
-                        <Text style={styles.listItem}>
-                        {rowData.title} -- {rowData.description}</Text>} />
-                </ScrollView>
-
+            <View style={styles.container}>  
+                { this.renderHeader() }
+            <ScrollView
+                enableEmptySections={true}
+                style={{
+                width: Dimensions
+                    .get('window')
+                    .width
+            }}>
+                <ListView
+                    dataSource={this.state.dataSource}
+                    renderRow={(rowData) => <this.props.listItem rowData={rowData}/>} />
+            </ScrollView>
             </View>
         );
     }
@@ -79,6 +82,6 @@ EventList.defaultProps = {
 
 export default connect(store => {
     return {
-        events: store.events.events
+        //events: store.events.events
     }
 })(EventList);

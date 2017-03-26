@@ -3,9 +3,12 @@ import {Text, View, StyleSheet, Dimensions, Button} from 'react-native';
 
 import Header from '../components/header'
 import TabView from '../components/tab-view'
+import EventList from '../components/event-list'
+import UserListItem from '../components/user-list-item'
 
-import {fetchEvent} from '../redux/actions/events'
+import {fetchEvent, joinEvent} from '../redux/actions/events'
 import {connect} from 'react-redux'
+
 
 import axios from 'axios'
 
@@ -14,7 +17,8 @@ class EventDetail extends Component {
         super(props);
 
         this.state = {
-            addr: ''
+            addr: '',
+            usrName: ''
         }
     }
     componentDidMount() {
@@ -31,24 +35,35 @@ class EventDetail extends Component {
                 })
             }));
 
+            if (this.props.userId !== this.props.event.owner) {
+                axios({
+                    url: 'https://hermes-hackathon.herokuapp.com/users/' + this.props.event.owner,
+                    method: 'get'
+                })
+                .then(res => {
+                    console.log(res.data);
+                    this.setState({usrName: res.data.name})
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+            }
+
     }
 
-    renderAttendee = () => {
-        if (this.props.event.owner === this.props.userId) {
-            return <Text>This is my event</Text> 
-        } else {
-            return <Button
-                        style={styles.joinButton} 
-                        title="KATIL" 
-                        onPress={() => {
 
-                        }}/>
-        }
+    renderAttendees = () => {
+        return <EventList data={this.props.event.attendees} listItem={UserListItem}/>
+    }
+
+    renderRequests = () => {
+        return <EventList data={this.props.event.requests} listItem={UserListItem}/>
     }
 
     render() {
         let startDate = new Date(this.props.event.start);
         let endDate = new Date(this.props.event.end);
+        console.log(this.props.event.attendees.indexOf(this.props.userId) !== -1);
         return (
             <View style={styles.container}>
                 <Header text="Event Detail"></Header>
@@ -56,8 +71,12 @@ class EventDetail extends Component {
                 <View style={styles.eventsInfo}>
                     <View style={styles.noDesc}>
                         <Text style ={styles.eventsInfoTextOne}>
-                            <Text style={styles.bold}>Owner:</Text>
-                            {this.props.userName}</Text>
+                            <Text style={styles.bold}>Owner: </Text>
+                            {
+                                this.props.userId === this.props.event.owner ? 
+                                this.props.userName : this.state.usrName
+                            
+                            }</Text>
                         <Text style ={styles.eventsInfoTextOne}>
                             <Text style={styles.bold}>Date:
                             </Text>
@@ -75,11 +94,29 @@ class EventDetail extends Component {
                     </Text>
                 </View>
 
-                <TabView
-                    title1={"Attendee"}
-                    title2={"DSd"}
-                    view1={this.renderAttendee()}
-                    view2={< Text > test </Text>}/>
+                {
+                    this.props.event.owner === this.props.userId ?
+                        <TabView
+                            title1={"Attendee"}
+                            title2={"Requests"}
+                            view1={this.renderAttendees()}
+                            view2={this.renderRequests()}/>
+
+                    :
+
+                        this.props.event.attendees.indexOf({userId: this.props.userId}) !== -1 ? 
+                            this.renderAttendees()
+                            :
+                            this.props.event.requests.indexOf({userId: this.props.userId}) !== -1 ?
+                                <Text>Request Pending...</Text>
+                                :
+                                <Button
+                                style={styles.joinButton} 
+                                title="Join" 
+                                onPress={() => {
+                                    this.props.dispatch(joinEvent(this.props.userId, this.props.eventId, this.props.userName));
+                                }}/>
+                }
 
             </View>
         );

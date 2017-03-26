@@ -18,12 +18,10 @@ class App extends Component {
     }
 
     render() {
-        let r = store.loggedIn ? EventMap : Login;
-
         return (
             <Provider store={store}>
                 <Navigator
-                    initialRoute={{component: r}}
+                    initialRoute={{component: Login}}
                     configureScene={() => {
                         return Navigator.SceneConfigs.FloatFromRight;
                     }}

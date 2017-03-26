@@ -25,7 +25,7 @@ import Header from '../components/header'
 import DatePickers from '../components/date-pickers'
 
 import {connect} from 'react-redux'
-import {createEvent} from '../redux/actions/events'
+import {createEvent, fetchEvents} from '../redux/actions/events'
 
 import EventDetail from './event-detail'
 
@@ -47,11 +47,12 @@ class EventCreate extends Component {
             endDate: '',
             title: '',
             type: '',
-            description: ''
+            description: '',
+            pois: []
         }
     }
     _handleButtonPress = () => {
-        if (this.state.description && this.state.title) {
+        if (this.state.description && this.state.title && this.state.type) {
             this
                 .props
                 .dispatch(createEvent({
@@ -61,10 +62,14 @@ class EventCreate extends Component {
                     owner: this.props.userId,
                     loc: this.state.markerCoordinate.latitude + ',' + this.state.markerCoordinate.longitude,
                     type: this.state.type,
-                    desc: this.state.description,
-                    pois: []
+                    desc: this.state.description
 
-                }, (id) => {
+                }, (id, err) => {
+                    if (err) {
+                    Alert.alert('Error! ' + err);
+                    return;  
+                }
+                
                     Alert.alert('Event created!');
                     this
                         .props
@@ -75,6 +80,7 @@ class EventCreate extends Component {
                                 eventId: id
                             }
                         });
+                    this.props.dispatch(fetchEvents());
                 }))
         }
     }

@@ -29,13 +29,13 @@ export const login = (token, userId, callback) => {
             url: 'https://graph.facebook.com/v2.5/me?fields=email,name&access_token=' + token,
             method: 'get'
         }).then(res => {
-            console.log(res.data);
             // backend user register
             axios({
                 url: 'https://hermes-hackathon.herokuapp.com/users/checkin',
                 method: 'post',
                 data: {
-                    facebook: userId
+                    facebook: userId,
+                    name: res.data.name
                 }
             })
             .then(res => {

@@ -8,6 +8,8 @@ import Header from '../components/header'
 const {width, height} = Dimensions.get('window');
 
 import EventList from '../components/event-list'
+import EventListItem from '../components/event-list-item'
+
 import Login from './login'
 import EventMap from './event-map'
 
@@ -16,9 +18,11 @@ import {logout} from '../redux/actions/user'
 
 class Profile extends Component {
    
-    navigate = (component, title) => {
+    navigate = (component, title, data, listItem) => {
       this.props.navigator.push({component: component, passProps: {
-        title: title
+        title: title,
+        data: data,
+        listItem: listItem
       }});
     }
 
@@ -53,7 +57,8 @@ class Profile extends Component {
           </TouchableHighlight>
           
           <TouchableHighlight onPress={() => {
-              this.navigate(EventList, 'My Events');
+
+              this.navigate(EventList, 'My Events', this.props.events, EventListItem);
             }} style={{width: 50, height: 80}}>
             <Image
               source={{ uri: 'http://i.hizliresim.com/j88z6j.png' }}
@@ -62,7 +67,8 @@ class Profile extends Component {
           </TouchableHighlight>
           
           <TouchableHighlight onPress={() => {
-            this.navigate(EventList, 'Attended Events');
+
+            this.navigate(EventList, 'Attended', this.props.events, EventListItem);
             }} style={{width: 50, height: 80}}>
             <Image
               source={{ uri: 'http://i.hizliresim.com/p00vbq.png' }}
@@ -99,6 +105,7 @@ const styles = StyleSheet.create({
 
 export default connect(store => {
   return {
-    user: store.user
+    user: store.user,
+    events: store.events.events
   }
 })(Profile);
